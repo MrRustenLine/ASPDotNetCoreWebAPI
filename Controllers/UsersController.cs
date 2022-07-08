@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASPDotNetCoreWebAPI.Models;
+using ASPDotNetCoreWebAPI.Service;
 
 namespace ASPDotNetCoreWebAPI.Controllers
 {
@@ -14,10 +15,12 @@ namespace ASPDotNetCoreWebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserContext _context;
+        private BusinessLogic customService;
 
         public UsersController(UserContext context)
         {
             _context = context;
+            customService = new BusinessLogic();
         }
 
         // GET: api/Users
@@ -28,7 +31,7 @@ namespace ASPDotNetCoreWebAPI.Controllers
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+          return await _context.Users.ToListAsync();
         }
 
         // GET: api/Users/5
@@ -52,12 +55,20 @@ namespace ASPDotNetCoreWebAPI.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(long id, User user)
+        public async Task<IActionResult> PutUser(long id, UserDTO userDTO)
         {
-            if (id != user.Id)
+            if (id != userDTO.Id)
             {
                 return BadRequest();
             }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.DisplayName = userDTO.DisplayName;
+            user.Password = userDTO.Password;
 
             _context.Entry(user).State = EntityState.Modified;
 
@@ -85,14 +96,30 @@ namespace ASPDotNetCoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-          if (_context.Users == null)
-          {
-              return Problem("Entity set 'UserContext.Users'  is null.");
-          }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'UserContext.Users'  is null.");
+            }
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            try
+            {
+                if (customService.ValidateNewUser(user))
+                {
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+
+                    return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+                }
+                else
+                {
+                    return Problem("New user could not be validated.");
+                }
+            }
+            catch (ArgumentException ae)
+            {
+                return Problem($"New user could not be validated. {ae.Message}");
+            }
+
         }
 
         // DELETE: api/Users/5
