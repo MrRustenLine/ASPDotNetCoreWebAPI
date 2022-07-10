@@ -15,23 +15,25 @@ namespace ASPDotNetCoreWebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserContext _context;
-        private BusinessLogic customService;
+        private BusinessLogic businessLogic;
 
         public UsersController(UserContext context)
         {
             _context = context;
-            customService = new BusinessLogic();
+            businessLogic = new BusinessLogic();
         }
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers()
         {
           if (_context.Users == null)
           {
               return NotFound();
           }
-          return await _context.Users.ToListAsync();
+          return await _context.Users
+                .Select(x => UserToDTO2(x))
+                .ToListAsync();
         }
 
         // GET: api/Users/5
@@ -68,8 +70,10 @@ namespace ASPDotNetCoreWebAPI.Controllers
                 return NotFound();
             }
             user.DisplayName = userDTO.DisplayName;
-            user.Password = userDTO.Password;
-
+            if (businessLogic.ValidatePassword(userDTO.Password))
+            {
+                user.Password = userDTO.Password;
+            }
             _context.Entry(user).State = EntityState.Modified;
 
             try
@@ -103,7 +107,7 @@ namespace ASPDotNetCoreWebAPI.Controllers
 
             try
             {
-                if (customService.ValidateNewUser(user))
+                if (businessLogic.ValidateNewUser(user))
                 {
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
@@ -146,5 +150,13 @@ namespace ASPDotNetCoreWebAPI.Controllers
         {
             return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        private static UserDTO2 UserToDTO2(User user) => new UserDTO2
+        {
+        Id = user.Id,
+        DisplayName = user.DisplayName,
+        Email = user.Email
+        };
+
     }
 }
