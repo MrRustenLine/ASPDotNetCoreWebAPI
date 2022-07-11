@@ -23,15 +23,73 @@ namespace ASPDotNetCoreWebAPI.Controllers
             businessLogic = new BusinessLogic();
         }
 
+        //// GET: api/Users
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers()
+        //{
+        //    if (_context.Users == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return await _context.Users
+        //     .Select(x => UserToDTO2(x))
+        //          .ToListAsync();
+        //}
+
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers(string sort_by, string sort_type, int page, string f, int page_size = 10)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-          return await _context.Users
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
+            IQueryable<User> query = _context.Users;
+
+            if ((!string.IsNullOrEmpty(sort_by)) && (!string.IsNullOrEmpty(sort_type)))
+            {
+                switch (sort_by)
+                {
+                    case "email":
+                        if (sort_type == "asc")
+                        {
+                            query = query.OrderBy(u => u.Email);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(u => u.Email);
+                        }
+                        break;
+                    case "displayname":
+                        if (sort_type == "asc")
+                        {
+                            query = query.OrderBy(u => u.DisplayName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(u => u.DisplayName);
+                        }
+                        break;
+                    case "id":
+                        if (sort_type == "asc")
+                        {
+                            query = query.OrderBy(u => u.Id);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(u => u.Id);
+                        }
+                        break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(f))
+            {
+                query = query.Where(u => u.Email.Contains(f));
+            }
+
+            return await query.Skip((page - 1)*page_size).Take(page_size)
                 .Select(x => UserToDTO2(x))
                 .ToListAsync();
         }
