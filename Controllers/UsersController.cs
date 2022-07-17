@@ -23,22 +23,9 @@ namespace ASPDotNetCoreWebAPI.Controllers
             businessLogic = new BusinessLogic();
         }
 
-        //// GET: api/Users
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers()
-        //{
-        //    if (_context.Users == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return await _context.Users
-        //     .Select(x => UserToDTO2(x))
-        //          .ToListAsync();
-        //}
-
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers(string sort_by, string sort_type, int page, string f, int page_size = 10)
+        public async Task<ActionResult<IEnumerable<UserDTO2>>> GetUsers(string? sort_by, string? sort_type, string? f, int? page = 1, int? page_size = 10)
         {
             if (_context.Users == null)
             {
@@ -49,7 +36,7 @@ namespace ASPDotNetCoreWebAPI.Controllers
 
             if ((!string.IsNullOrEmpty(sort_by)) && (!string.IsNullOrEmpty(sort_type)))
             {
-                switch (sort_by)
+                switch (sort_by.ToLower())
                 {
                     case "email":
                         if (sort_type == "asc")
@@ -86,10 +73,24 @@ namespace ASPDotNetCoreWebAPI.Controllers
 
             if (!string.IsNullOrEmpty(f))
             {
-                query = query.Where(u => u.Email.Contains(f));
+                int equalIndex = f.IndexOf("=");
+                if (equalIndex > 4)
+                {
+                    string filterType = f.Substring(0, equalIndex);
+                    string filterValue = f.Substring(equalIndex + 1);
+                    switch (filterType.ToLower())
+                    {
+                        case "email":
+                            query = query.Where(u => u.Email.ToLower().Contains(filterValue));
+                            break;
+                        case "displayname":
+                            query = query.Where(u => u.DisplayName.ToLower().Contains(filterValue));
+                            break;
+                    }
+                }
             }
 
-            return await query.Skip((page - 1)*page_size).Take(page_size)
+            return await query.Skip(((int)page - 1) * (int)page_size).Take((int)page_size)
                 .Select(x => UserToDTO2(x))
                 .ToListAsync();
         }
