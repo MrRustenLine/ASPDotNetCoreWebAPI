@@ -118,40 +118,47 @@ namespace ASPDotNetCoreWebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(long id, UserDTO userDTO)
         {
-            if (id != userDTO.Id)
-            {
-                return BadRequest();
-            }
-
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            user.DisplayName = userDTO.DisplayName;
-            if (businessLogic.ValidatePassword(userDTO.Password))
-            {
-                user.Password = userDTO.Password;
-            }
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                if (id != userDTO.Id)
+                {
+                    return BadRequest();
+                }
+
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
                 {
                     return NotFound();
                 }
-                else
+                user.DisplayName = userDTO.DisplayName;
+                if (businessLogic.ValidatePassword(userDTO.Password))
                 {
-                    throw;
+                    user.Password = userDTO.Password;
                 }
-            }
+                _context.Entry(user).State = EntityState.Modified;
 
-            return NoContent();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return NoContent();
+            }
+            catch (ArgumentException ae)
+            {
+                return Problem($"User could not be updated. {ae.Message}");
+            }
         }
 
         // POST: api/Users

@@ -15,7 +15,7 @@ namespace ASPDotNetCoreWebAPI.Service
                 {
                     try
                     {
-                        if (ValidatePassword(user.Password))
+                        if (ValidatePassword(user.Password) && ValidateDisplayName(user.DisplayName) && ValidateEmail(user.Email))
                         {
                             return true;
                         }
@@ -37,14 +37,40 @@ namespace ASPDotNetCoreWebAPI.Service
         }
         public bool ValidatePassword(string password)
         {
-            if (password.Length < 8)
-            {
-                throw new ArgumentException("Email password must be at least 8 characters long.");
-            }
-            //else if (user.Password.Contains())
-            else
+            bool hasUpper = password.Any(char.IsUpper);
+            bool hasNumber = password.Any(char.IsNumber);
+            bool lengthCorrect = (password.Length > 7);
+            if (lengthCorrect && hasUpper && hasNumber)
             {
                 return true;
+            }
+            else
+            {
+                throw new ArgumentException("Email password must be at least 8 characters long with at least 1 upper case and 1 numeric.");
+            }
+        }
+
+        public bool ValidateDisplayName(string displayName)
+        {
+            if (!string.IsNullOrEmpty(displayName))
+            {
+                return true;
+            }
+            else
+            {
+                throw new ArgumentException("Display name cannot be blank.");
+            }
+        }
+
+        public bool ValidateEmail(string email)
+        {
+            if (email.Length > 2)
+            {
+                return true;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid email address.");
             }
         }
     }
