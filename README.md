@@ -27,6 +27,9 @@ Requirements are outlined below:
 	Support paging (default page size = 10)
 Show a clear separation between controller and business logic. 
 
+## DELETE /api/users/{userID}
+	Delete the specified user.
+
 # Unit testing should be included.
 Code coverage is not that important. This is just to demonstrate an understanding of unit testing an application with a DB dependency.
 
