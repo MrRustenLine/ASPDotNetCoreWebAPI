@@ -1,5 +1,5 @@
 # ASPDotNetCoreWebAPI
-This project demonstrates the use of ASP .NET Core RESTful API and Entity Framework.
+This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First).
 
 The spec is quite generic and as follows:
 
