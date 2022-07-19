@@ -1,7 +1,5 @@
 # ASPDotNetCoreWebAPI
-This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First).
-
-Its aim is to store user information using .NET Core 6.
+This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First) whose aim is to store user information.
 
 Requirements are outlined below:
 
