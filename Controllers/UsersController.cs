@@ -219,9 +219,9 @@ namespace ASPDotNetCoreWebAPI.Controllers
 
         private static UserDTO2 UserToDTO2(User user) => new UserDTO2
         {
-        Id = user.Id,
-        DisplayName = user.DisplayName,
-        Email = user.Email
+            Id = user.Id,
+            DisplayName = user.DisplayName,
+            Email = user.Email
         };
 
     }
