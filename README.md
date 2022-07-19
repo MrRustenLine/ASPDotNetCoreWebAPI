@@ -1,9 +1,7 @@
 # ASPDotNetCoreWebAPI
 This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First).
 
-The spec is quite generic and as follows:
-
-Develop a REST API project to store user information using .NET Core 3.1 or above.
+Its aim is to store user information using .NET Core 6.
 
 Requirements are outlined below:
 
@@ -31,6 +29,7 @@ Show a clear separation between controller and business logic.
 	Delete the specified user.
 
 # Unit testing should be included.
+
 Code coverage is not that important. This is just to demonstrate an understanding of unit testing an application with a DB dependency.
 
 # Demonstrate understanding domain-driven design.
