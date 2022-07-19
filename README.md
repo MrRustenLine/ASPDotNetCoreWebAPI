@@ -8,11 +8,11 @@ Requirements are outlined below:
 # The API should expose the following endpoints:
 
 ##	POST /api/users
-	Create a user with the following attributes:
-•	Email
+### 	Create a user with the following attributes:
+####•	Email
 •	Password
 •	DisplayName
-	All fields are mandatory, with password be at least 8 characters, must only accept with at least 1 upper case and 1 numeric. 
+###	All fields are mandatory, with password be at least 8 characters, must only accept with at least 1 upper case and 1 numeric. 
 
 ## PUT /api/users/{userID}
 	Update the specified user.
