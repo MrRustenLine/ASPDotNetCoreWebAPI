@@ -9,11 +9,9 @@ Requirements are outlined below:
 
 Create a user with the following attributes:
 
-- `email` -
-- `data/prices.json`
-•	Email
-•	Password
-•	DisplayName
+- `Email` 
+- `Password`
+- `DisplayName` 
 
 All fields are mandatory, with password be at least 8 characters, must only accept with at least 1 upper case and 1 numeric. 
 
