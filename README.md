@@ -17,9 +17,11 @@ All fields are mandatory, with password be at least 8 characters, must only acce
 
 ### PUT /api/users/{userID}
 
-•	Update the specified user.
-•	Only accepts update on DisplayName and password.
-•	Password must meet the requirement as stated above.
+Update the specified user.
+
+Only accepts update on DisplayName and password.
+
+Password must meet the requirement as stated above.
 
 ### GET /api/users
 
