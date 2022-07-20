@@ -9,6 +9,8 @@ Requirements are outlined below:
 
 Create a user with the following attributes:
 
+- `email` -
+- `data/prices.json`
 •	Email
 •	Password
 •	DisplayName
