@@ -1,9 +1,10 @@
 # ASPDotNetCoreWebAPI
+
 This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First) whose aim is to store user information.
 
 ## Requirements are outlined below:
 
-### The API should expose the following endpoints:
+### 1. The API should expose the following endpoints:
 
 ####	POST /api/users
 
@@ -35,19 +36,19 @@ Support paging (default page size = 10)
 
 Delete the specified user.
 
-### Unit testing should be included.
+### 2. Unit testing should be included.
 
 Code coverage is not that important. This is just to demonstrate an understanding of unit testing an application with a DB dependency.
 
-### Use any database, including InMemory database.
+### 3. Use any database, including InMemory database.
 
-### Use any ORM, but EFCore code first would be preferred.
+### 4. Use any ORM, but EFCore code first would be preferred.
 
 ## Nice to have:
 
-### Show a clear separation between controller and business logic. 
+### a. Show a clear separation between controller and business logic. 
 
-### Demonstrate understanding domain-driven design.
+### b. Domain-driven design.
 
-### GET /api/users can be sorted/filtered by any columns using a generic way.
+### c. GET /api/users can be sorted/filtered by any columns using a generic way.
 
