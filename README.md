@@ -1,11 +1,11 @@
 # ASPDotNetCoreWebAPI
 This project demonstrates the use of ASP .NET Core RESTful API and ORM Entity Framework (EF) Core (Code First) whose aim is to store user information.
 
-# Requirements are outlined below:
+## Requirements are outlined below:
 
-## The API should expose the following endpoints:
+### The API should expose the following endpoints:
 
-###	POST /api/users
+####	POST /api/users
 
 Create a user with the following attributes:
 
@@ -15,7 +15,7 @@ Create a user with the following attributes:
 
 All fields are mandatory, with password be at least 8 characters, must only accept with at least 1 upper case and 1 numeric. 
 
-### PUT /api/users/{userID}
+#### PUT /api/users/{userID}
 
 Update the specified user.
 
@@ -23,7 +23,7 @@ Only accepts update on DisplayName and password.
 
 Password must meet the requirement as stated above.
 
-### GET /api/users
+#### GET /api/users
 
 List all users, excluding password.
 
@@ -31,23 +31,23 @@ Be able to sort and filter by email.
 
 Support paging (default page size = 10)
 
-### DELETE /api/users/{userID}
+#### DELETE /api/users/{userID}
 
 Delete the specified user.
 
-## Unit testing should be included.
+### Unit testing should be included.
 
 Code coverage is not that important. This is just to demonstrate an understanding of unit testing an application with a DB dependency.
 
-## Use any database, including InMemory database.
+### Use any database, including InMemory database.
 
-## Use any ORM, but EFCore code first would be preferred.
+### Use any ORM, but EFCore code first would be preferred.
 
-# Nice to have:
+## Nice to have:
 
-## Show a clear separation between controller and business logic. 
+### Show a clear separation between controller and business logic. 
 
-## Demonstrate understanding domain-driven design.
+### Demonstrate understanding domain-driven design.
 
-## GET /api/users can be sorted/filtered by any columns using a generic way.
+### GET /api/users can be sorted/filtered by any columns using a generic way.
 
